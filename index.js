@@ -2,9 +2,9 @@ addEventListener('fetch', event => {
   event.respondWith(handleRequest(event.request))
 })
 
-const VALID_PATH = "/xxxxx"
-const VALID_KEY = "token"
-const VALID_VAL = "114514"
+const VALID_PATH = this.VALID_PATH || "/xxxxx"
+const VALID_KEY = this.VALID_KEY || "token"
+const VALID_VAL = this.VALID_VAL || "114514"
 
 async function handleRequest(request) {
   // TASKS = "[{\"domain\":\"example.com\",\"zone_id\":\"11122233\",\"api_bear_token\":\" ***  \"}]"
