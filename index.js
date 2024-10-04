@@ -1,14 +1,16 @@
-addEventListener('fetch', event => {
-  event.respondWith(handleRequest(event.request))
-})
 
-const VALID_PATH = this.VALID_PATH || "/xxxxx"
-const VALID_KEY = this.VALID_KEY || "token"
-const VALID_VAL = this.VALID_VAL || "114514"
 
-async function handleRequest(request) {
+export default {
+  async fetch(request, env, ctx) {
+    return handleRequest(request, env, ctx);
+  }
+}
+
+async function handleRequest(request, env, ctx) {
   // TASKS = "[{\"domain\":\"example.com\",\"zone_id\":\"11122233\",\"api_bear_token\":\" ***  \"}]"
-  
+  const VALID_PATH = env.VALID_PATH || "/xxxxx"
+  const VALID_KEY = env.VALID_KEY || "token"
+  const VALID_VAL = env.VALID_VAL || "114514"
   try{
       const url = new URL(request.url)
       const path = url.pathname
@@ -18,9 +20,9 @@ async function handleRequest(request) {
           return new Response(content, { headers: { "Content-Type": 'text/plain' }, status: 200 })
       }
       if( path !== VALID_PATH || token !== VALID_VAL){
-          return new Response(JSON.stringify({ error: "No auth", path, token }), { status: 403, headers: { "Content-Type": "application/json" } });
+          return new Response(JSON.stringify({ error: "No auth" }), { status: 403, headers: { "Content-Type": "application/json" } });
       }
-      const allTasks = JSON.parse(this.TASKS || '[]')
+      const allTasks = JSON.parse(env.TASKS || '[]')
       const ip = url.searchParams.get("ip") || await getGcoreIP();
       
       const allResultsFutrue = allTasks.map(async task => {
