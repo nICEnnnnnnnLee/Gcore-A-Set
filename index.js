@@ -13,6 +13,10 @@ async function handleRequest(request) {
       const url = new URL(request.url)
       const path = url.pathname
       const token = url.searchParams.get(VALID_KEY)
+      if (url.pathname === '/robots.txt') {
+          const content = `User-agent: *\nDisallow: /`
+          return new Response(content, { headers: { "Content-Type": 'text/plain' }, status: 200 })
+      }
       if( path !== VALID_PATH || token !== VALID_VAL){
           return new Response(JSON.stringify({ error: "No auth", path, token }), { status: 403, headers: { "Content-Type": "application/json" } });
       }
