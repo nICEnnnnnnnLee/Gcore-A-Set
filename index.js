@@ -17,7 +17,7 @@ async function handleRequest(request) {
           return new Response(JSON.stringify({ error: "No auth", path, token }), { status: 403, headers: { "Content-Type": "application/json" } });
       }
       const allTasks = JSON.parse(this.TASKS || '[]')
-      const ip = await getGcoreIP();
+      const ip = url.searchParams.get("ip") || await getGcoreIP();
       
       const allResultsFutrue = allTasks.map(async task => {
           const headers = { "Content-Type" : "application/json", Authorization: `Bearer ${task.api_bear_token}`}
